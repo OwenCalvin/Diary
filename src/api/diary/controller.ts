@@ -1,68 +1,61 @@
 import { Server } from 'socket.io'
-import Diary from '../../ws/Diary'
-import Post from '../../class/Post'
+import Diary from '../../class/Diary'
+import Post from '../../class/PostObjects/Post'
 import Crawler from '../../class/Crawler'
+import CrawlerObject from '../../class/CrawlerObjects/CrawlerObject'
+import InstagramStorieCrawler from '../../class/CrawlerObjects/Instagram/InstagramStorieCrawler'
+import { Page } from 'puppeteer'
+import InstagramFeed from '../../types/InstagramFeedType'
+import InstagramPostCrawler from '../../class/CrawlerObjects/Instagram/InstagramPostCrawler';
+import InstagramPost from '../../class/PostObjects/Instagram/InstagramStoriePost'
 
 export default class DiaryController {
   IOServer: Server
   Diary: Diary
-  Crawler: Crawler = new Crawler([{
-    name: 'instagramStories',
-    url: 'https://www.instagram.com/stories/clairo/',
-    query: 'img.y-yJ5._7NpAS',
-    actionForEach: ['click', '.ow3u_'],
-    properties: [
-      ['links', 'src']
-    ]
-  }])
+  Crawler = new Crawler([
+    new InstagramStorieCrawler('claidotro2', this.instagramStorie),
+    new InstagramPostCrawler(this.instagram.bind(this))
+  ])
 
   constructor (ioServer: Server) {
     this.IOServer = ioServer
     this.Diary = new Diary(ioServer)
-    // this.crawl()
-  }
-
-  async crawl () {
-    await this.Crawler.launchBrowser()
     this.Crawler.scanAll()
   }
 
-  facebook (req, res) {
-    console.log('a')
-    this.Diary.addPost(new Post(
-      'facebook'
-    ))
-    res.send('hello world')
+  //#region NO-WEBHOOKS
+  facebook () {
+    // this.Diary.addPost(...)
   }
+
+  instagram (posts: InstagramPost[]) {
+    console.log(posts.length)
+    // this.Diary.add(posts)
+    // console.log(this.Diary.Posts)
+    // this.Diary.addPost(...)
+  }
+
+  instagramStorie (test: any) {
+    // console.log(test)
+    // this.Diary.addPost(...)
+  }
+
+  spotify () {
+    // this.Diary.addPost(...)
+  }
+  //#endregion
+
+  //#region WEBHOOKS
   twitter (req, res) {
-    console.log(req.body)
-    this.Diary.addPost(new Post(
-      'twitter'
-    ))
-    res.send('yes')
+    // this.Diary.addPost(...)
   }
-  instagram (req, res) {
-    this.Diary.addPost(new Post(
-      'instagram'
-    ))
-  }
+
   youtube (req, res) {
-    console.log(req.body)
-    this.Diary.addPost(new Post(
-      'youtube'
-    ))
-    res.send('yes')
+    // this.Diary.addPost(...)
   }
+
   soundcloud (req, res) {
-    console.log(req.body)
-    this.Diary.addPost(new Post(
-      'soundcloud'
-    ))
-    res.send('yes')
+    // this.Diary.addPost(...)
   }
-  spotify (req, res) {
-    this.Diary.addPost(new Post(
-      'spotify'
-    ))
-  }
+  //#endregion
 }

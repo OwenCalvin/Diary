@@ -2,11 +2,8 @@ import { Server } from 'socket.io'
 import DiaryController from './controller'
 
 const WHSocials = [
-  'facebook',
   'twitter',
   'soundcloud',
-  'spotify',
-  'instagram',
   'youtube'
 ]
 
