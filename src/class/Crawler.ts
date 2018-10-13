@@ -14,7 +14,7 @@ export default class Crawler {
     if (!this.Browser) {
       this.Browser = await puppeteer.launch({
         headless: false,
-        userDataDir: '/Users/owen/Library/Application Support/Chromium/Default',
+        userDataDir: 'C:\\Users\\oweng\\AppData\\Local\\Chromium\\User Data',
         devtools: true
       })
     } 
@@ -23,8 +23,9 @@ export default class Crawler {
   async scanAll () {
     await this.launchBrowser()
     await Promise.all(this.ObjectsToScan.map(async ots => {
+      const beforeRes = ots.Before ? await ots.Before(this.Browser) : null
       const page = await this.Browser.newPage()
-      page.on('response', (res) => ots.onResponse(res))
+      page.on('response', (res) => ots.onResponse(res, beforeRes))
       await page.goto(ots.URL)
       if (ots.WaitFor) {
         await page.waitFor(ots.WaitFor)

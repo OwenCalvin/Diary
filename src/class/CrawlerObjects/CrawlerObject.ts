@@ -1,4 +1,4 @@
-import { Page, Response } from 'puppeteer'
+import { Page, Response, Browser } from 'puppeteer'
 import Post from '../PostObjects/Post'
 
 export default abstract class CrawlerObject {
@@ -7,11 +7,13 @@ export default abstract class CrawlerObject {
   readonly OnResponse: (res: any) => any
   readonly WaitFor?: string
   readonly Process?: (page: Page) => any
+  readonly Before?: (browser: Browser) => any
   public abstract OnResponseCallback: (posts: Post[]) => any
 
-  constructor (name, url, process = null, waitFor = null) {
+  constructor (name, url, process = null, before = null, waitFor = null) {
     this.Name = name,
     this.URL = url
+    this.Before = before
     this.Process = process
     this.WaitFor = waitFor
   }
@@ -20,5 +22,5 @@ export default abstract class CrawlerObject {
     this.Process(page)
   }
 
-  abstract onResponse (res: Response)
+  abstract onResponse (res: Response, beforeValues: any)
 }

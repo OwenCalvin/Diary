@@ -57,7 +57,7 @@ export default (io: Server) => {
       router.use(`/${file}`, apiRouter)
       console.log('✅  API:', color(`${file}`, 'fg.green'))
     } else {
-      console.log(`❌  API: ${file} - ` + color('router.ts is required', 'fg.red'))
+      console.log(`❌  API: ${file} - ` + color('router is required', 'fg.red'))
     }
   })
   

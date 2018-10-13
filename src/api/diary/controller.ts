@@ -9,12 +9,14 @@ import InstagramFeed from '../../types/InstagramFeedType'
 import InstagramPostCrawler from '../../class/CrawlerObjects/Instagram/InstagramPostCrawler';
 import InstagramPost from '../../class/PostObjects/Instagram/InstagramStoriePost'
 
+const username = 'justinbieber'
+
 export default class DiaryController {
   IOServer: Server
   Diary: Diary
   Crawler = new Crawler([
-    new InstagramStorieCrawler('claidotro2', this.instagramStorie),
-    new InstagramPostCrawler(this.instagram.bind(this))
+    new InstagramStorieCrawler(username, this.instagramStorie),
+    new InstagramPostCrawler(username, this.instagram.bind(this))
   ])
 
   constructor (ioServer: Server) {
@@ -23,14 +25,18 @@ export default class DiaryController {
     this.Crawler.scanAll()
   }
 
+  addToDiary(posts: Post[]) {
+    this.Diary.add(posts)
+    this.IOServer.emit('new:post', posts)
+  }
+
   //#region NO-WEBHOOKS
   facebook () {
     // this.Diary.addPost(...)
   }
 
   instagram (posts: InstagramPost[]) {
-    console.log(posts.length)
-    // this.Diary.add(posts)
+    this.addToDiary(posts)
     // console.log(this.Diary.Posts)
     // this.Diary.addPost(...)
   }
