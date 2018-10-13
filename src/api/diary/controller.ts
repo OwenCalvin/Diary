@@ -1,14 +1,30 @@
 import { Server } from 'socket.io'
 import Diary from '../../ws/Diary'
 import Post from '../../class/Post'
+import Crawler from '../../class/Crawler'
 
 export default class DiaryController {
   IOServer: Server
   Diary: Diary
+  Crawler: Crawler = new Crawler([{
+    name: 'instagramStories',
+    url: 'https://www.instagram.com/stories/clairo/',
+    query: 'img.y-yJ5._7NpAS',
+    actionForEach: ['click', '.ow3u_'],
+    properties: [
+      ['links', 'src']
+    ]
+  }])
 
   constructor (ioServer: Server) {
     this.IOServer = ioServer
     this.Diary = new Diary(ioServer)
+    // this.crawl()
+  }
+
+  async crawl () {
+    await this.Crawler.launchBrowser()
+    this.Crawler.scanAll()
   }
 
   facebook (req, res) {
