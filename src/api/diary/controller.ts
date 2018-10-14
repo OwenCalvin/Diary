@@ -16,8 +16,8 @@ export default class DiaryController {
   IOServer: Server
   Diary: Diary
   Crawler = new Crawler([
-    new InstagramStoryCrawler(username, this.instagramStory),
-    new InstagramPostCrawler(username, this.instagram.bind(this))
+    // new InstagramStoryCrawler(username, this.instagramStory),
+    new InstagramPostCrawler('8703518995', this.instagram.bind(this))
   ])
 
   constructor (ioServer: Server) {
@@ -43,7 +43,7 @@ export default class DiaryController {
   }
 
   instagramStory (InstagramStory: InstagramStory) {
-    console.log(InstagramStory.Files.length)
+    console.log(InstagramStory.Files)
     // console.log(test)
     // this.Diary.addPost(...)
   }

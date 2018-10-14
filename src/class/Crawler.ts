@@ -20,9 +20,11 @@ export default class Crawler {
   }
 
   async scanAll () {
-    await this.launchBrowser()
+    // await this.launchBrowser()
     await Promise.all(this.ObjectsToScan.map(async ots => {
-      const beforeRes = ots.Before ? await ots.Before(this.Browser) : null
+      ots.execute()
+      /*
+      const beforeRes = ots.beforePageNavigation ? await ots.beforePageNavigation(this.Browser) : null
       const page = await this.Browser.newPage()
       ots.Page = page
       page.on('close', async () => {
@@ -30,7 +32,7 @@ export default class Crawler {
           try {
             await this.Browser.close()
           } catch (err) {
-            
+
           }
         }
       })
@@ -42,9 +44,10 @@ export default class Crawler {
       if (ots.WaitFor) {
         await page.waitFor(ots.WaitFor)
       }
-      if (ots.Process) {
-        await ots.execute(page)
+      if (ots.executeOnPage) {
+        await ots.executeOnPage(page)
       }
+      */
     }))
   }
 }

@@ -11,7 +11,7 @@ export default class InstagramStory extends Post {
       'instagram',
       'story',
       new Date(),
-      'Hello',
+      '',
       `https://instagram.com/stories/${media.owner.username}`,
       ''
     )
