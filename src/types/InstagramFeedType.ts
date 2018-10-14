@@ -1,4 +1,4 @@
-export default interface InstagramFeed {
+export default interface InstagramFeedType {
   data: Data
   status: string
 }

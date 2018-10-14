@@ -1,6 +1,5 @@
 import * as puppeteer from 'puppeteer'
 import CrawlerObject from './CrawlerObjects/CrawlerObject'
-import InstagramPost from './PostObjects/Instagram/InstagramStoriePost'
 
 export default class Crawler {
   private ObjectsToScan: CrawlerObject[]
@@ -25,8 +24,21 @@ export default class Crawler {
     await Promise.all(this.ObjectsToScan.map(async ots => {
       const beforeRes = ots.Before ? await ots.Before(this.Browser) : null
       const page = await this.Browser.newPage()
+      ots.Page = page
+      page.on('close', async () => {
+        if ((await this.Browser.pages()).length <= 1) {
+          try {
+            await this.Browser.close()
+          } catch (err) {
+            
+          }
+        }
+      })
+      if (ots.onRequest) {
+        page.on('request', (req) => ots.onRequest(req))
+      }
       page.on('response', (res) => ots.onResponse(res, beforeRes))
-      await page.goto(ots.URL)
+      await page.goto(ots.URL, {waitUntil: 'networkidle2'})
       if (ots.WaitFor) {
         await page.waitFor(ots.WaitFor)
       }

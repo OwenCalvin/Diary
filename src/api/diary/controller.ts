@@ -3,19 +3,20 @@ import Diary from '../../class/Diary'
 import Post from '../../class/PostObjects/Post'
 import Crawler from '../../class/Crawler'
 import CrawlerObject from '../../class/CrawlerObjects/CrawlerObject'
-import InstagramStorieCrawler from '../../class/CrawlerObjects/Instagram/InstagramStorieCrawler'
+import InstagramStoryCrawler from '../../class/CrawlerObjects/Instagram/InstagramStoryCrawler'
 import { Page } from 'puppeteer'
 import InstagramFeed from '../../types/InstagramFeedType'
 import InstagramPostCrawler from '../../class/CrawlerObjects/Instagram/InstagramPostCrawler';
-import InstagramPost from '../../class/PostObjects/Instagram/InstagramStoriePost'
+import InstagramPost from '../../class/PostObjects/Instagram/InstagramStory'
+import InstagramStory from '../../class/PostObjects/Instagram/InstagramStory';
 
-const username = 'justinbieber'
+const username = 'claidotro2'
 
 export default class DiaryController {
   IOServer: Server
   Diary: Diary
   Crawler = new Crawler([
-    new InstagramStorieCrawler(username, this.instagramStorie),
+    new InstagramStoryCrawler(username, this.instagramStory),
     new InstagramPostCrawler(username, this.instagram.bind(this))
   ])
 
@@ -41,7 +42,8 @@ export default class DiaryController {
     // this.Diary.addPost(...)
   }
 
-  instagramStorie (test: any) {
+  instagramStory (InstagramStory: InstagramStory) {
+    console.log(InstagramStory.Files.length)
     // console.log(test)
     // this.Diary.addPost(...)
   }

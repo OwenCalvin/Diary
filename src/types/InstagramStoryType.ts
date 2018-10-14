@@ -1,4 +1,4 @@
-export default interface InstagramStory {
+export default interface InstagramStoryType {
   data: Data
   status: string
 }
@@ -7,7 +7,7 @@ interface Data {
   reels_media: ReelsMediaItem[]
 }
 
-interface ReelsMediaItem {
+export interface ReelsMediaItem {
   __typename: string
   id: string
   latest_reel_media: number
@@ -33,7 +33,7 @@ interface User {
   requested_by_viewer: boolean
 }
 
-interface ItemsItem {
+export interface ItemsItem {
   __typename: string
   id: string
   dimensions: Dimensions
