@@ -1,13 +1,14 @@
-import { Page, Response, Browser, Request } from 'puppeteer'
-import Post from '../PostObjects/Post'
+export abstract class CrawlerObject {
+  private _name: string
+  protected abstract _onFinishCallback: (...params: any[]) => any
 
-export default abstract class CrawlerObject {
-  readonly Name: string
-  public abstract OnFinishCallback: (...params: any) => any
-
-  constructor (name) {
-    this.Name = name
+  public get Name () {
+    return this._name
   }
 
-  abstract execute()
+  constructor (name) {
+    this._name = name
+  }
+
+  abstract execute(...args: any[]): (any[] | Promise<any[]> | Promise<void> | void)
 }

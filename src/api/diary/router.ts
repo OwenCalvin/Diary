@@ -1,5 +1,5 @@
 import { Server } from 'socket.io'
-import DiaryController from './controller'
+import { DiaryController } from './controller'
 
 const WHSocials = [
   'twitter',

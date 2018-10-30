@@ -1,69 +1,53 @@
 import { Server } from 'socket.io'
 import Diary from '../../class/Diary'
 import Post from '../../class/PostObjects/Post'
-import Crawler from '../../class/Crawler'
-import CrawlerObject from '../../class/CrawlerObjects/CrawlerObject'
-import InstagramStoryCrawler from '../../class/CrawlerObjects/Instagram/InstagramStoryCrawler'
-import { Page } from 'puppeteer'
-import InstagramFeed from '../../types/InstagramFeedType'
-import InstagramPostCrawler from '../../class/CrawlerObjects/Instagram/InstagramPostCrawler';
-import InstagramPost from '../../class/PostObjects/Instagram/InstagramStory'
-import InstagramStory from '../../class/PostObjects/Instagram/InstagramStory';
+import { InstagramLogin, InstagramFeed, InstagramStory, CrawlerCollection } from '../../class/CrawlerObjects'
 
-const username = 'claidotro2'
-
-export default class DiaryController {
-  IOServer: Server
-  Diary: Diary
-  Crawler = new Crawler([
-    // new InstagramStoryCrawler(username, this.instagramStory),
-    new InstagramPostCrawler('8703518995', this.instagram.bind(this))
+export class DiaryController {
+  private _IoServer: Server
+  private _diary: Diary
+  private _crawlers = new CrawlerCollection([
+    new InstagramLogin('claidotro', 'Kyukurama18', this.instagramLogin),
+    new InstagramFeed(this.instagramPost),
+    new InstagramStory(this.instagramStory)
   ])
 
-  constructor (ioServer: Server) {
-    this.IOServer = ioServer
-    this.Diary = new Diary(ioServer)
-    this.Crawler.scanAll()
+  public constructor (ioServer: Server) {
+    this._IoServer = ioServer
+    this._diary = new Diary(ioServer)
+    this._crawlers.executeAll()
   }
 
-  addToDiary(posts: Post[]) {
-    this.Diary.add(posts)
-    this.IOServer.emit('new:post', posts)
+  public addToDiary(posts: Post[]) {
+    this._diary.add(posts)
+    this._IoServer.emit('new:post', posts)
   }
 
   //#region NO-WEBHOOKS
-  facebook () {
-    // this.Diary.addPost(...)
+  public facebook () {
   }
 
-  instagram (posts: InstagramPost[]) {
-    this.addToDiary(posts)
-    // console.log(this.Diary.Posts)
-    // this.Diary.addPost(...)
+  public instagramPost (a) {
   }
 
-  instagramStory (InstagramStory: InstagramStory) {
-    console.log(InstagramStory.Files)
-    // console.log(test)
-    // this.Diary.addPost(...)
+  public instagramLogin (a) {
   }
 
-  spotify () {
-    // this.Diary.addPost(...)
+  public instagramStory (a) {
+  }
+
+  public spotify () {
   }
   //#endregion
 
   //#region WEBHOOKS
-  twitter (req, res) {
-    // this.Diary.addPost(...)
+  public twitter (req, res) {
   }
 
-  youtube (req, res) {
-    // this.Diary.addPost(...)
+  public youtube (req, res) {
   }
 
-  soundcloud (req, res) {
-    // this.Diary.addPost(...)
+  public soundcloud (req, res) {
   }
   //#endregion
 }
