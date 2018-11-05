@@ -1,29 +1,29 @@
+import { getInstagramQueryURL, UserStoryQueryHash, getRequestConfig } from '../../../constants'
 import { CrawlerObject } from '../..'
+import axios from 'axios'
+import InstagramStoryType from '../../../../types/InstagramStoryType'
+import InstagramPost from '../../../PostObjects/Instagram/InstagramPostObject'
+import { InstagramStory as InstagramStoryPost } from '../../../PostObjects'
 
 export class InstagramStory extends CrawlerObject {
   protected _onFinishCallback: (...params: any[]) => void
+  private _lastPost: InstagramPost
   
-  constructor (onFinishCallback) {
+  public constructor (onFinishCallback) {
     super('instagramStory')
     this._onFinishCallback = onFinishCallback
   }
 
-  async execute(sessionId: string, CsrfToken: string) {
-    console.log(sessionId, CsrfToken)
+  public async execute(userId: string, sessionId: string) {
+    const storys: InstagramStoryType = (await axios.get(
+      getInstagramQueryURL(UserStoryQueryHash, {
+        reel_ids: [userId],
+        precomposed_overlay: false,
+        show_story_header_follow_button: false
+      }),
+      getRequestConfig(sessionId)
+    )).data
+    const storyPosts = new InstagramStoryPost(storys.data.reels_media[0])
+    console.log(storyPosts)
   }
-
-  /*
-  public async onResponse(res: Response) {
-    const url = res.url()
-    if (url.includes('https://www.instagram.com/graphql/query/') && url.includes('reel_ids')) {
-      try {
-        const json: InstagramStoryType = await res.json()
-        // this._onFinishCallback(new InstagramStory(json.data.reels_media[0]))
-        // this.Page.close()
-      } catch (err) {
-        console.log('Tried to process a non-story response')
-      }
-    }
-  }
-  */
 }

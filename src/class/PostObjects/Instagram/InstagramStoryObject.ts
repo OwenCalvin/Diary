@@ -1,9 +1,9 @@
-import Post from '../Post'
+import { Post }  from '..'
 import InstagramFile from './InstagramFile'
 import { ReelsMediaItem } from '../../../types/InstagramStoryType'
-import InstagramStoryFile from './InstagramStoryFile';
+import InstagramStoryFile from './InstagramStoryFile'
 
-export default class InstagramStory extends Post {
+export class InstagramStory extends Post {
   Files: InstagramFile[] = []
 
   constructor (media: ReelsMediaItem) {
@@ -15,7 +15,7 @@ export default class InstagramStory extends Post {
       `https://instagram.com/stories/${media.owner.username}`,
       ''
     )
-    this.Files = media.items.map(mi => {
+    this.Files = media.items.map((mi) => {
       return new InstagramStoryFile(mi)
     })
   }

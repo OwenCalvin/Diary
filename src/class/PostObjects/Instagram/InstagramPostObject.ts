@@ -1,4 +1,4 @@
-import Post from '../Post'
+import { Post }  from '..'
 import InstagramFile from './InstagramFile'
 import { EdgeWebFeedTimeline, EdgesItem } from '../../../types/InstagramFeedType'
 

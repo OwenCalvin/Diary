@@ -1,27 +1,53 @@
-export default class Post {
-  SocialNetworkName: string
-  Text: string
-  Date: Date
-  Type: 'post' | 'story'
-  URL: string
-  SocialID: string
+type PostOrStoryType = 'post' | 'story'
 
-  constructor (
+export class Post {
+  private _socialNetworkName: string
+  private _text: string
+  private _date: Date
+  private _type: PostOrStoryType
+  private _url: string
+  private _socialId: string
+
+  public get SocialNetworkName() {
+    return this._socialNetworkName
+  }
+
+  public get Text() {
+    return this._text
+  }
+
+  public get Date() {
+    return this._date
+  }
+
+  public get Type() {
+    return this._type
+  }
+
+  public get SocialId() {
+    return this._socialId
+  }
+
+  public get Url() {
+    return this._url
+  }
+
+  public constructor (
     socialNetworkName: string,
-    type: 'post' | 'story',
+    type: PostOrStoryType,
     date: Date | string,
     text: string,
     url: string,
-    socialID: string
+    socialId: string
   ) {
     if (typeof date === 'string') {
       date = new Date(date)
     }
-    this.SocialNetworkName = socialNetworkName
-    this.Type = type
-    this.Date = date
-    this.Text = text
-    this.URL = url
-    this.SocialID = socialID
+    this._socialNetworkName = socialNetworkName
+    this._type = type
+    this._date = date
+    this._text = text
+    this._url = url
+    this._socialId = socialId
   }
 }

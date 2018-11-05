@@ -1,15 +1,21 @@
 import { Server } from 'socket.io'
 import Diary from '../../class/Diary'
 import Post from '../../class/PostObjects/Post'
-import { InstagramLogin, InstagramFeed, InstagramStory, CrawlerCollection } from '../../class/CrawlerObjects'
+import { InstagramLogin, InstagramFeed, InstagramStory, CrawlerCollection, Instagram, InstagramUser } from '../../class/CrawlerObjects'
 
 export class DiaryController {
   private _IoServer: Server
   private _diary: Diary
   private _crawlers = new CrawlerCollection([
-    new InstagramLogin('claidotro', 'Kyukurama18', this.instagramLogin),
-    new InstagramFeed(this.instagramPost),
-    new InstagramStory(this.instagramStory)
+    new Instagram(
+      'claidotro2',
+      new InstagramLogin('claidotro', 'Kyukurama18'),
+      new InstagramUser(this.instagramUser),
+      new CrawlerCollection([
+        // new InstagramFeed(this.instagramPost),
+        new InstagramStory(this.instagramStory)
+      ])
+    )
   ])
 
   public constructor (ioServer: Server) {
@@ -25,6 +31,9 @@ export class DiaryController {
 
   //#region NO-WEBHOOKS
   public facebook () {
+  }
+
+  public instagramUser(a) {
   }
 
   public instagramPost (a) {

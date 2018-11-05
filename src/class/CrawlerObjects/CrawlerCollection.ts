@@ -7,13 +7,7 @@ export class CrawlerCollection {
     this._objectsToScan = objectsToScan
   }
 
-  async executeAll () {
-    let lastResults: any[] = []
-    for (let ots of this._objectsToScan) {
-      const res = await ots.execute(...lastResults)
-      if (Array.isArray(res)) {
-        lastResults = res
-      }
-    }
+  async executeAll (...params: any[]) {
+    await Promise.all(this._objectsToScan.map(async (ots) => ots.execute(...params)))
   }
 }

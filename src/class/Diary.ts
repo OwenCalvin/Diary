@@ -1,29 +1,29 @@
-import Post from './PostObjects/Post'
+import { Post } from './PostObjects'
 import { Server } from 'socket.io'
 
 export default class Diary {
-  private _Posts: Post[] = []
-  private IOServer: Server
+  private _posts: Post[] = []
+  private _IoServer: Server
 
   public get Posts (): Post[] {
-    return this._Posts
+    return this._posts
   }
 
   constructor (ioServer: Server) {
-    this.IOServer = ioServer
+    this._IoServer = ioServer
   }
 
   add (post: Post)
   add (posts: Post[])
   add (post: Post | Post[]) {
     if (Array.isArray(post)) {
-      this._Posts = [
-        ...this._Posts,
+      this._posts = [
+        ...this._posts,
         ...post
       ]
     } else {
       this.Posts.push(post)
     }
-    this.IOServer.emit('post:new', post)
+    this._IoServer.emit('post:new', post)
   }
 }

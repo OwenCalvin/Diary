@@ -11,7 +11,7 @@ interface User {
   id: string
   profile_pic_url: string
   username: string
-  edge_web_feed_timeline: EdgeWebFeedTimeline
+  edge_owner_to_timeline_media: EdgeWebFeedTimeline
 }
 
 export interface EdgeWebFeedTimeline {
